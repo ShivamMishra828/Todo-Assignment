@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const apiRoutes = require("./routes");
 
 const app = express();
 
@@ -14,5 +15,7 @@ app.use(
         methods: ["GET", "POST", "PUT", "PATCH", "UPDATE"],
     })
 );
+
+app.use("/api", apiRoutes);
 
 module.exports = app;
