@@ -45,7 +45,22 @@ async function signIn(req, res) {
     }
 }
 
+async function logout(req, res) {
+    try {
+        return res
+            .clearCookie("token", {
+                httpOnly: true,
+                secure: true,
+            })
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse({}, "User logged out successfully."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     signUp,
     signIn,
+    logout,
 };

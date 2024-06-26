@@ -84,7 +84,29 @@ async function signIn(data) {
     }
 }
 
+async function verifyJWT(data) {
+    try {
+        const user = await userRepository.getUserByEmail(data.email);
+        if (!user) {
+            throw new AppError(
+                "User corresponding to token doesn't exist.",
+                StatusCodes.NOT_FOUND
+            );
+        }
+        return user;
+    } catch (error) {
+        if (error.statusCode == StatusCodes.NOT_FOUND) {
+            throw new AppError(error.explanation, error.statusCode);
+        }
+        throw new AppError(
+            "An unexpected error occurred while verifying the token.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     signUp,
     signIn,
+    verifyJWT,
 };
