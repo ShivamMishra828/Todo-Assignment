@@ -52,7 +52,10 @@ async function signIn(data) {
 
         const isPasswordValid = await user.checkPassword(data.password);
         if (!isPasswordValid) {
-            throw new AppError("Invalid Credentials", StatusCodes.BAD_REQUEST);
+            throw new AppError(
+                "Invalid credentials. Please try again.",
+                StatusCodes.BAD_REQUEST
+            );
         }
 
         const payload = {
@@ -63,7 +66,7 @@ async function signIn(data) {
         const token = await Auth.generateJWTToken(payload);
         if (!token) {
             throw new AppError(
-                "JWT Token not generated.",
+                "Failed to generate JWT token. Please try again.",
                 StatusCodes.BAD_REQUEST
             );
         }
