@@ -17,17 +17,35 @@ async function signUp(req, res) {
             .json(new SuccessResponse(user, "User created successfully."));
     } catch (error) {
         // Respond with the error details
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
+async function signIn(req, res) {
+    try {
+        const token = await UserService.signIn({
+            email: req.body.email,
+            password: req.body.password,
+        });
+
         return res
-            .status(error.statusCode)
+            .cookie("token", token, {
+                httpOnly: true,
+                expires: new Date(Date.now() + 60 * 60 * 1000),
+            })
+            .status(StatusCodes.OK)
             .json(
-                new ErrorResponse(
-                    error,
-                    error.explanation || "Failed to create user."
+                new SuccessResponse(
+                    { jwtToken: token },
+                    "User signin successfully."
                 )
             );
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
     }
 }
 
 module.exports = {
     signUp,
+    signIn,
 };
