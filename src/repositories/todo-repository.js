@@ -6,17 +6,22 @@ class TodoRepository extends CrudRepository {
         super(Todo);
     }
 
-    async updateUserTodoList(userId, taskId) {
+    async updateUserTodoList(userId, todoId) {
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             {
                 $push: {
-                    tasks: taskId,
+                    todos: todoId,
                 },
             },
             { new: true }
         ).select("-password");
         return updatedUser;
+    }
+
+    async fetchAll(userId) {
+        const user = await User.findById(userId).populate("todos");
+        return user.todos;
     }
 }
 

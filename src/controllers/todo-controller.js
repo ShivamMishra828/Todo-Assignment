@@ -17,6 +17,18 @@ async function createTodo(req, res) {
     }
 }
 
+async function fetchAllTodos(req, res) {
+    try {
+        const todos = await TodoService.fetchAllTodos(req.user.id);
+        return res
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse(todos, "Fetched all todos."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
+    fetchAllTodos,
 };

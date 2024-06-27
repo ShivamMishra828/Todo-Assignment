@@ -10,5 +10,6 @@ router.post(
     TodoMiddleware.validateCreateTodoRequest,
     TodoController.createTodo
 );
+router.get("/", TodoController.fetchAllTodos);
 
 module.exports = router;

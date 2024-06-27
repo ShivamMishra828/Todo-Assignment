@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        tasks: [
+        todos: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Todo",

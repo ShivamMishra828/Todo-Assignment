@@ -15,7 +15,6 @@ async function createTodo(data) {
             data.userId,
             todo._id
         );
-        console.log(updatedUser);
         return todo;
     } catch (error) {
         console.log(error);
@@ -26,6 +25,20 @@ async function createTodo(data) {
     }
 }
 
+async function fetchAllTodos(userId) {
+    try {
+        const todos = await todoRepository.fetchAll(userId);
+        return todos;
+    } catch (error) {
+        console.log(error);
+        throw new AppError(
+            "An unexpected error occurred while fetching all todos.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     createTodo,
+    fetchAllTodos,
 };
