@@ -38,7 +38,30 @@ async function fetchAllTodos(userId) {
     }
 }
 
+async function fetchTodoById(todoId) {
+    try {
+        const todo = await todoRepository.fetchById(todoId);
+        if (!todo) {
+            throw new AppError(
+                "Todo with given id doesn't exist.",
+                StatusCodes.NOT_FOUND
+            );
+        }
+
+        return todo;
+    } catch (error) {
+        if (error.statusCode == StatusCodes.NOT_FOUND) {
+            throw new AppError(error.explanation, error.statusCode);
+        }
+        throw new AppError(
+            "An unexpected error occurred while fetching all todos.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
+    fetchTodoById,
 };

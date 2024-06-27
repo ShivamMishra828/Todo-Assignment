@@ -28,7 +28,19 @@ async function fetchAllTodos(req, res) {
     }
 }
 
+async function fetchTodoById(req, res) {
+    try {
+        const todo = await TodoService.fetchTodoById(req.params.todoId);
+        return res
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse(todo, "Todo fetched successfully."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
+    fetchTodoById,
 };

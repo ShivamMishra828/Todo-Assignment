@@ -11,5 +11,6 @@ router.post(
     TodoController.createTodo
 );
 router.get("/", TodoController.fetchAllTodos);
+router.get("/:todoId", TodoController.fetchTodoById);
 
 module.exports = router;
