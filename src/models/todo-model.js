@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { Enums } = require("../utils/common");
+const { COMPLETED, PENDING } = Enums.Todo_Types;
 
 const todoSchema = new mongoose.Schema(
     {
@@ -16,8 +18,8 @@ const todoSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["pending", "completed"],
-            default: "pending",
+            enum: [PENDING, COMPLETED],
+            default: PENDING,
         },
         assignedUser: {
             type: mongoose.Schema.Types.ObjectId,

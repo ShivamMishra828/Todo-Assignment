@@ -54,7 +54,7 @@ async function fetchTodoById(todoId) {
             throw new AppError(error.explanation, error.statusCode);
         }
         throw new AppError(
-            "An unexpected error occurred while fetching all todos.",
+            "An unexpected error occurred while fetching todo by id.",
             StatusCodes.INTERNAL_SERVER_ERROR
         );
     }
@@ -66,7 +66,27 @@ async function updateTodoDetails(todoId, data) {
         return updatedTodo;
     } catch (error) {
         throw new AppError(
-            "An unexpected error occurred while fetching all todos.",
+            "An unexpected error occurred while updating todo.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
+async function updateTodoStatus(todoId) {
+    try {
+        const todo = await todoRepository.fetchById(todoId);
+        if (!todo) {
+            throw new AppError("Todo not found.", StatusCodes.NOT_FOUND);
+        }
+
+        const updatedTodo = await todoRepository.updateStatus(todo);
+        return updatedTodo;
+    } catch (error) {
+        if (error.statusCode == StatusCodes.NOT_FOUND) {
+            throw new AppError(error.explanation, error.statusCode);
+        }
+        throw new AppError(
+            "An unexpected error occurred while updating todo status.",
             StatusCodes.INTERNAL_SERVER_ERROR
         );
     }
@@ -77,4 +97,5 @@ module.exports = {
     fetchAllTodos,
     fetchTodoById,
     updateTodoDetails,
+    updateTodoStatus,
 };

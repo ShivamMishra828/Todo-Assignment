@@ -17,5 +17,6 @@ router.put(
     TodoMiddleware.validateUpdateTodoRequest,
     TodoController.updateTodoDetails
 );
+router.patch("/:todoId", TodoController.updateTodoStatus);
 
 module.exports = router;

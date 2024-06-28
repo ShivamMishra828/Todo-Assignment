@@ -23,6 +23,22 @@ class TodoRepository extends CrudRepository {
         const user = await User.findById(userId).populate("todos");
         return user.todos;
     }
+
+    async updateStatus(todo) {
+        const updatedTodo =
+            todo.status == "pending"
+                ? await Todo.findByIdAndUpdate(
+                      todo._id,
+                      { $set: { status: "completed" } },
+                      { new: true }
+                  )
+                : await Todo.findByIdAndUpdate(
+                      todo._id,
+                      { $set: { status: "pending" } },
+                      { new: true }
+                  );
+        return updatedTodo;
+    }
 }
 
 module.exports = TodoRepository;

@@ -54,9 +54,28 @@ async function updateTodoDetails(req, res) {
     }
 }
 
+async function updateTodoStatus(req, res) {
+    try {
+        const updatedTodo = await TodoService.updateTodoStatus(
+            req.params.todoId
+        );
+        return res
+            .status(StatusCodes.OK)
+            .json(
+                new SuccessResponse(
+                    updatedTodo,
+                    "Todo status updated successfully."
+                )
+            );
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
     fetchTodoById,
     updateTodoDetails,
+    updateTodoStatus,
 };
