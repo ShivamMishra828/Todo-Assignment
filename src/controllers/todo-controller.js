@@ -72,10 +72,22 @@ async function updateTodoStatus(req, res) {
     }
 }
 
+async function deleteTodo(req, res) {
+    try {
+        const response = await TodoService.deleteTodo(req.params.todoId);
+        return res
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse(response, "Todo deleted successfully."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
     fetchTodoById,
     updateTodoDetails,
     updateTodoStatus,
+    deleteTodo,
 };

@@ -21,6 +21,11 @@ class CrudRepository {
         );
         return response;
     }
+
+    async delete(id) {
+        const response = await this.model.findByIdAndDelete(id);
+        return response;
+    }
 }
 
 module.exports = CrudRepository;

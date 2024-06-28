@@ -18,5 +18,6 @@ router.put(
     TodoController.updateTodoDetails
 );
 router.patch("/:todoId", TodoController.updateTodoStatus);
+router.delete("/:todoId", TodoController.deleteTodo);
 
 module.exports = router;

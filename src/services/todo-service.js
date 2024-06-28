@@ -92,10 +92,29 @@ async function updateTodoStatus(todoId) {
     }
 }
 
+async function deleteTodo(todoId) {
+    try {
+        const response = await todoRepository.delete(todoId);
+        if (!response) {
+            throw new AppError("Todo not found", StatusCodes.NOT_FOUND);
+        }
+        return response;
+    } catch (error) {
+        if (error.statusCode == StatusCodes.NOT_FOUND) {
+            throw new AppError(error.explanation, error.statusCode);
+        }
+        throw new AppError(
+            "An unexpected error occurred while deleting todo.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
     fetchTodoById,
     updateTodoDetails,
     updateTodoStatus,
+    deleteTodo,
 };
