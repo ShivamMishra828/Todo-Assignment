@@ -39,6 +39,11 @@ class TodoRepository extends CrudRepository {
                   );
         return updatedTodo;
     }
+
+    async fetchFilteredTodo(userId, status) {
+        const todos = await Todo.find({ assignedUser: userId, status });
+        return todos;
+    }
 }
 
 module.exports = TodoRepository;

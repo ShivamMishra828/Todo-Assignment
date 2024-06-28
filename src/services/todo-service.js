@@ -110,6 +110,19 @@ async function deleteTodo(todoId) {
     }
 }
 
+async function fetchFilteredTodo(userId, status) {
+    try {
+        const todos = await todoRepository.fetchFilteredTodo(userId, status);
+        return todos;
+    } catch (error) {
+        console.log(error);
+        throw new AppError(
+            "An unexpected error occurred while fetching todo by filter.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
@@ -117,4 +130,5 @@ module.exports = {
     updateTodoDetails,
     updateTodoStatus,
     deleteTodo,
+    fetchFilteredTodo,
 };

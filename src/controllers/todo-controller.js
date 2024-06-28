@@ -83,6 +83,20 @@ async function deleteTodo(req, res) {
     }
 }
 
+async function fetchFilteredTodo(req, res) {
+    try {
+        const todos = await TodoService.fetchFilteredTodo(
+            req.user.id,
+            req.query.status
+        );
+        return res
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse(todos, "Todo fetched successfully."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
@@ -90,4 +104,5 @@ module.exports = {
     updateTodoDetails,
     updateTodoStatus,
     deleteTodo,
+    fetchFilteredTodo,
 };
