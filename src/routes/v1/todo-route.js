@@ -12,5 +12,10 @@ router.post(
 );
 router.get("/", TodoController.fetchAllTodos);
 router.get("/:todoId", TodoController.fetchTodoById);
+router.put(
+    "/:todoId",
+    TodoMiddleware.validateUpdateTodoRequest,
+    TodoController.updateTodoDetails
+);
 
 module.exports = router;

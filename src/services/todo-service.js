@@ -60,8 +60,21 @@ async function fetchTodoById(todoId) {
     }
 }
 
+async function updateTodoDetails(todoId, data) {
+    try {
+        const updatedTodo = await todoRepository.update(todoId, data);
+        return updatedTodo;
+    } catch (error) {
+        throw new AppError(
+            "An unexpected error occurred while fetching all todos.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
     fetchTodoById,
+    updateTodoDetails,
 };

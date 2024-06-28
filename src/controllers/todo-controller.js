@@ -39,8 +39,24 @@ async function fetchTodoById(req, res) {
     }
 }
 
+async function updateTodoDetails(req, res) {
+    try {
+        const updates = req.updates;
+        const todo = await TodoService.updateTodoDetails(
+            req.params.todoId,
+            updates
+        );
+        return res
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse(todo, "Todo updated successfully."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
     fetchTodoById,
+    updateTodoDetails,
 };

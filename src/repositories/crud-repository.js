@@ -12,6 +12,15 @@ class CrudRepository {
         const response = await this.model.findById(id);
         return response;
     }
+
+    async update(id, data) {
+        const response = await this.model.findByIdAndUpdate(
+            id,
+            { $set: data },
+            { new: true }
+        );
+        return response;
+    }
 }
 
 module.exports = CrudRepository;

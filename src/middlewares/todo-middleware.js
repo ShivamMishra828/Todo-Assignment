@@ -27,6 +27,22 @@ async function validateCreateTodoRequest(req, res, next) {
     next();
 }
 
+async function validateUpdateTodoRequest(req, res, next) {
+    let updates = {};
+    if (req.body.title) {
+        updates.title = req.body.title;
+    }
+    if (req.body.description) {
+        updates.description = req.body.description;
+    }
+    if (req.body.dueDate) {
+        updates.dueDate = new Date(req.body.dueDate);
+    }
+    req.updates = updates;
+    next();
+}
+
 module.exports = {
     validateCreateTodoRequest,
+    validateUpdateTodoRequest,
 };
