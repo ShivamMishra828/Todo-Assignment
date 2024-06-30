@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 const { createObjectCsvWriter } = require("csv-writer");
 
+// Function to validate a MongoDB ObjectId
 async function isValidObjectId(id) {
     return mongoose.Types.ObjectId.isValid(id);
 }
 
+// Function to generate a CSV file from an array of todo objects
 async function generateTodosCSV(todos) {
     const csvFilePath = `public/downloads/todos-${Date.now()}.csv`;
+
+    // Create a CSV writer with the specified path and headers
     const csvWriter = createObjectCsvWriter({
         path: csvFilePath,
         header: [
@@ -19,6 +23,7 @@ async function generateTodosCSV(todos) {
         ],
     });
 
+    // Map the todo objects to the CSV format
     const records = todos.map((todo) => ({
         title: todo.title,
         description: todo.description,
@@ -28,7 +33,9 @@ async function generateTodosCSV(todos) {
         updatedAt: todo.updatedAt.toISOString(),
     }));
 
+    // Write the records to the CSV file
     await csvWriter.writeRecords(records);
+
     return csvFilePath;
 }
 
