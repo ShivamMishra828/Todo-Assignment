@@ -26,6 +26,11 @@ class CrudRepository {
         const response = await this.model.findByIdAndDelete(id);
         return response;
     }
+
+    async createMany(data) {
+        const response = await this.model.insertMany(data);
+        return response;
+    }
 }
 
 module.exports = CrudRepository;

@@ -44,6 +44,14 @@ class TodoRepository extends CrudRepository {
         const todos = await Todo.find({ assignedUser: userId, status });
         return todos;
     }
+
+    async addTodosToUser(userId, todoIds) {
+        await User.findByIdAndUpdate(
+            userId,
+            { $push: { todos: { $each: todoIds } } },
+            { new: true }
+        );
+    }
 }
 
 module.exports = TodoRepository;

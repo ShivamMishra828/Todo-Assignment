@@ -1,6 +1,6 @@
 const express = require("express");
 const { TodoController } = require("../../controllers");
-const { AuthMiddleware, TodoMiddleware } = require("../../middlewares");
+const { AuthMiddleware, TodoMiddleware, Multer } = require("../../middlewares");
 
 const router = express.Router();
 
@@ -20,5 +20,6 @@ router.put(
 );
 router.patch("/:todoId", TodoController.updateTodoStatus);
 router.delete("/:todoId", TodoController.deleteTodo);
+router.post("/upload", Multer.single("file"), TodoController.createManyTodos);
 
 module.exports = router;

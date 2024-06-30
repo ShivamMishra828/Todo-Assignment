@@ -1,6 +1,7 @@
 const { ErrorResponse, SuccessResponse } = require("../utils/common");
 const { TodoService } = require("../services");
 const { StatusCodes } = require("http-status-codes");
+const AppError = require("../utils/errors/app-error");
 
 async function createTodo(req, res) {
     try {
@@ -97,6 +98,33 @@ async function fetchFilteredTodo(req, res) {
     }
 }
 
+async function createManyTodos(req, res) {
+    try {
+        if (!req.file) {
+            return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(
+                    new ErrorResponse(
+                        new AppError(
+                            "CSV file not found.",
+                            StatusCodes.BAD_REQUEST
+                        )
+                    )
+                );
+        }
+
+        const response = await TodoService.createManyTodos(
+            req.file.path,
+            req.user.id
+        );
+        return res
+            .status(StatusCodes.OK)
+            .json(new SuccessResponse(response, "Todos created successfully."));
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
@@ -105,4 +133,5 @@ module.exports = {
     updateTodoStatus,
     deleteTodo,
     fetchFilteredTodo,
+    createManyTodos,
 };
