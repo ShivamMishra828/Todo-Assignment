@@ -10,6 +10,7 @@ router.post(
     TodoMiddleware.validateCreateTodoRequest,
     TodoController.createTodo
 );
+router.get("/download", TodoController.generateTodos);
 router.get("/filter", TodoController.fetchFilteredTodo);
 router.get("/", TodoController.fetchAllTodos);
 router.get("/:todoId", TodoController.fetchTodoById);

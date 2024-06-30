@@ -2,6 +2,7 @@ const { ErrorResponse, SuccessResponse } = require("../utils/common");
 const { TodoService } = require("../services");
 const { StatusCodes } = require("http-status-codes");
 const AppError = require("../utils/errors/app-error");
+const fs = require("fs");
 
 async function createTodo(req, res) {
     try {
@@ -125,6 +126,22 @@ async function createManyTodos(req, res) {
     }
 }
 
+async function generateTodos(req, res) {
+    try {
+        const csvFilePath = await TodoService.generateTodos(req.user.id);
+        res.download(csvFilePath, "todos.csv", (err) => {
+            if (err) {
+                console.error("Error downloading the file:", err);
+                res.status(500).send("Error downloading the file.");
+            }
+            // Remove the file after download
+            fs.unlinkSync(csvFilePath);
+        });
+    } catch (error) {
+        return res.status(error.statusCode).json(new ErrorResponse(error));
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
@@ -134,4 +151,5 @@ module.exports = {
     deleteTodo,
     fetchFilteredTodo,
     createManyTodos,
+    generateTodos,
 };

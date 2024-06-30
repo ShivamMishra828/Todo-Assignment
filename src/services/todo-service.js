@@ -3,7 +3,7 @@ const { TodoRepository } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
 const csvParser = require("csv-parser");
 const fs = require("fs");
-const { isValidObjectId } = require("../helpers");
+const { isValidObjectId, generateTodosCSV } = require("../helpers");
 
 const todoRepository = new TodoRepository();
 
@@ -202,6 +202,27 @@ async function createManyTodos(filePath, userId) {
     }
 }
 
+async function generateTodos(userId) {
+    try {
+        const todos = await todoRepository.fetchAll(userId);
+        if (!todos.length) {
+            throw new AppError("No todos found", StatusCodes.NOT_FOUND);
+        }
+
+        const response = await generateTodosCSV(todos);
+        return response;
+    } catch (error) {
+        console.log(error);
+        if (error.statusCode == StatusCodes.NOT_FOUND) {
+            throw new AppError(error.explanation, error.statusCode);
+        }
+        throw new AppError(
+            "An unexpected error occurred while downloading todos.",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+
 module.exports = {
     createTodo,
     fetchAllTodos,
@@ -211,4 +232,5 @@ module.exports = {
     deleteTodo,
     fetchFilteredTodo,
     createManyTodos,
+    generateTodos,
 };
